@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using NosediveNetwork.Models;
+using NosediveNetwork.Services;
 
 namespace NosediveNetwork
 {
@@ -23,7 +26,16 @@ namespace NosediveNetwork
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<NosediveNetworkDatabaseSettings>(
+                Configuration.GetSection(nameof(NosediveNetworkDatabaseSettings)));
+            services.AddSingleton<INosediveNetworkDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<NosediveNetworkDatabaseSettings>>().Value);
+            services.AddSingleton<NosediveService>();
+
+
+
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
