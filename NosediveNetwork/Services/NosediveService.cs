@@ -37,17 +37,9 @@ namespace NosediveNetwork.Services
 
         public List<Post> Feed(User user)
         {
-            //var tempFeed = _Circles.Find(new BsonDocument("CircleId", )).ToList();
-            //tempCircles.Find(new BsonDocument(""));
-
-            // filter = Builders<Post>.Filter.ElemMatch(x => x.Tags, x => x.Name == "test");
-
-            //return _Posts.Find(Builders<Post>.Filter.ElemMatch(post => post.ci)).ToList();
-
             return _Posts.Find(Builders<Post>.Filter
-                .Where(x => user.CircleId.Contains(x.CircleId) || user.Friends.Contains(x.UserId))).ToList();
-            // user.
-            //return _Posts.Find(new BsonDocument("UserId", user_id)).ToList();
+                .Where(x => user.CircleId.Contains(x.CircleId) || (user.Friends.Contains(x.UserId)  && x.CircleId == null ))).ToList();
+
         }
 
         public List<Post> Wall(User user)
@@ -68,7 +60,7 @@ namespace NosediveNetwork.Services
                 Timestamp = DateTime.Now,
                 UserId = user.Id,
                 TextContent = content,
-                CircleId = circle.CircleId
+                CircleId = (circle != null ? circle.CircleId : null)
             };
             _Posts.InsertOne(post);
             return post;
@@ -132,6 +124,7 @@ namespace NosediveNetwork.Services
    
             // Creating circles
             CreateCircle(GetUser("Morten Hansen"), "Area 51 conspiracy group");
+            CreateCircle(GetUser("Rasmus Føgh"), "Hot girls group");
 
             UserAddCircle(GetCircle("Area 51 conspiracy group"), GetUser("Rasmus Føgh"));
 
@@ -140,9 +133,19 @@ namespace NosediveNetwork.Services
             var post2 = CreateTextPost(GetUser("Rasmus Føgh"), "Hej jeg er i tvivl om mit køn!", GetCircle("Area 51 conspiracy group"));
             var post3 = CreateTextPost(GetUser("Viktor Lundsgaard"), "Hej jeg laver mange damer!", GetCircle("Hot girls group"));
             var post4 = CreateTextPost(GetUser("Morten Hansen"), "Jeg kan godt lide kylling!", GetCircle("Area 51 conspiracy group"));
+            var post5 = CreatePicturePost(GetUser("Morten Hansen"), new Picture() { FileName = "Images/dog.jpg" }, GetCircle("Area 51 conspiracy group"));
+            var post6 = CreateTextPost(GetUser("Viktor Lundsgaard"), "Dette er en post som ikke er en del af en gruppe. Meget spændende", null);
+
 
             CreateComment(post1, GetUser("Viktor Lundsgaard"), "Super fedt Morten, jeg hedder Viktor!");
             CreateComment(post4, GetUser("Viktor Lundsgaard"), "Super fedt Morten, det kan jeg også!");
+            CreateComment(post5, GetUser("Viktor Lundsgaard"), "Fed hund!!! <3 XD Roflmao");
+            CreateComment(post5, GetUser("Morten Hansen"), "Tak!");
+            CreateComment(post2, GetUser("Morten Hansen"), "TMi, too much information, you know.. TMI broww!");
+            CreateComment(post3, GetUser("Rasmus Føgh"), "Også mig!");
+            CreateComment(post3, GetUser("Rasmus Føgh"), "Tinder er for fedt :P XD LOL");
+            CreateComment(post3, GetUser("Rasmus Føgh"), "Hvorfor svarer du ikke........ dude?");
+            CreateComment(post5, GetUser("Rasmus Føgh"), "Fed hund mate!!!");
 
             // Adding friends
             UserAddFriend(GetUser("Morten Hansen"), GetUser("Viktor Lundsgaard"));
