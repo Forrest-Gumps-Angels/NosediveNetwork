@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <h1>Reception Get Page</h1>
+    <h1>Feed</h1>
 
     <div class="output">
         @foreach (var Post in Model.FeedList)
@@ -23,6 +23,7 @@
                 <ul style="list-style-type: none">
                     <h3>@Model.NosediveService.GetUserFromId(Post.UserId).Name</h3>
                     <li style="margin-bottom:20px">@Post.TextContent</li>
+                    <li><small>@Post.Timestamp</small></li>
                     <div class="comments">
                         <ul style="list-style-type: none">
                             @if (Post.Comments != null)
@@ -31,14 +32,15 @@
                                 {
                                     <h4 style="color:dimgrey">@Model.NosediveService.GetUserFromId(comment.UserId).Name</h4>
                                     <li style="color:dimgrey">@comment.Content</li>
+                                    <li><small>@comment.Timestamp</small></li>
                                 }
                             }
-                        <form method="post" asp-controller="Feed" asp-action="PostComment">
-                            <input name="content" type="text" />
-                            <input type="hidden" name="postid" value="@Post.PostId" />
-                            <input type="hidden" name="user" value="Morten Hansen" />
-                            <input type="submit" value="Send" />
-                        </form>
+                            <form method="post" asp-controller="Feed" asp-action="PostComment">
+                                <input name="content" type="text" />
+                                <input type="hidden" name="postid" value="@Post.PostId" />
+                                <input type="hidden" name="user" value="Morten Hansen" />
+                                <input type="submit" value="Send" />
+                            </form>
                         </ul>
                     </div>
                 </ul>

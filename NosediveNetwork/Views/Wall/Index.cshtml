@@ -3,32 +3,50 @@
     ViewData["Title"] = "Wall";
 }
 
-
-
-
 <!DOCTYPE html>
 <html>
-<head>
-    <link href="@Url.Content("~/css/nosedive.css")" rel="stylesheet" type="text/css" />
-</head>
 
 <body>
     <h1>Wall</h1>
 
-    <form method="get" asp-controller="Wall" asp-action="Index">
-        
-        <div class="output">
-            @foreach (var Post in Model.WallList)
-            {
+    <div class="output">
+        @foreach (var Post in Model.WallList)
+        {
+            <div class="single_post" style="border: 5px solid #1C6EA4; margin-bottom:20px">
+                <ul style="list-style-type: none">
+                    <h3>@Model.NosediveService.GetUserFromId(Post.UserId).Name</h3>
+                    <li style="margin-bottom:20px">@Post.TextContent</li>
+                    <li><small>@Post.Timestamp</small></li>
+                    <div class="comments">
+                        <ul style="list-style-type: none">
+                            @if (Post.Comments != null)
+                            {
+                                @foreach (var comment in Post.Comments)
+                                {
+                                    <h4 style="color:dimgrey">@Model.NosediveService.GetUserFromId(comment.UserId).Name</h4>
+                                    <li style="color:dimgrey">@comment.Content</li>
+                                    <li><small>@comment.Timestamp</small></li>
+                                }
+                            }
+                            <form method="post" asp-controller="Wall" asp-action="PostComment">
+                                <input name="content" type="text" />
+                                <input type="hidden" name="postid" value="@Post.PostId" />
+                                <input type="hidden" name="user" value="Morten Hansen" />
+                                <input type="submit" value="Send" />
+                            </form>
+                        </ul>
+                    </div>
+                </ul>
+            </div>
 
-            }
 
-        </div>
-    </form>
+
+
+        }
+
+    </div>
 </body>
 </html>
-
-
 
 
 
