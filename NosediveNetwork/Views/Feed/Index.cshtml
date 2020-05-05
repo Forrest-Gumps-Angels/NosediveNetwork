@@ -12,10 +12,10 @@
     <div class="output">
         @foreach (var Post in Model.FeedList)
         {
-
             <div class="single_post" style="border: 5px solid #1C6EA4; margin-bottom:20px">
                 <ul style="list-style-type: none">
                     <h3>@Model.NosediveService.GetUserFromId(Post.UserId).Name</h3>
+                    <h3 style="float:right; margin-right:10px;">@Model.NosediveService.GetCircleFromId(Post.CircleId).Name</h3>
                     <li style="margin-bottom:5px">@Post.TextContent</li>
                     <li><small>@Post.Timestamp</small></li>
                     <div class="comments">
@@ -34,7 +34,7 @@
                                 }
                             }
                             <form method="post" asp-controller="Feed" asp-action="PostComment" style="margin-left:10px">
-                                <input name="content" type="text" style="min-width:345px"/>
+                                <input name="content" type="text" style="min-width:345px" />
                                 <input type="hidden" name="postid" value="@Post.PostId" />
                                 <input type="hidden" name="user" value="Morten Hansen" />
                                 <input type="submit" value="Send" />
