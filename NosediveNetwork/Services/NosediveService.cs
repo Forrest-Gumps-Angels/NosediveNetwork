@@ -34,6 +34,8 @@ namespace NosediveNetwork.Services
         public User GetUserFromId(string id) => _Users.Find(user => user.Id == id).FirstOrDefault();
         public Circle GetCircle(string name) => _Circles.Find(circle => circle.Name == name).FirstOrDefault();
 
+        public Post GetPostFromId(string id) => _Posts.Find(post => post.PostId == id).FirstOrDefault();
+
 
         //public List<Post> GetPosts(string user_id) => _Posts.Find(post => post.UserId == user_id).ToList();
 

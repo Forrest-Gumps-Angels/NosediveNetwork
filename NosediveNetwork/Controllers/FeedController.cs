@@ -21,5 +21,12 @@ namespace NosediveNetwork.Controllers
         {
             return View(new FeedViewModel(_nosediveService));
         }
+
+        [HttpPost]
+        public IActionResult PostComment(string content, string postid, string user)
+        {
+            _nosediveService.CreateComment(_nosediveService.GetPostFromId(postid), _nosediveService.GetUser(user), content);
+            return View("Index", new FeedViewModel(_nosediveService));
+        }
     }
 }
