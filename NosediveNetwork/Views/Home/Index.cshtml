@@ -5,7 +5,14 @@
 
     <div class="text-center">
         <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <p>You are logged in as @CurrentUser.CurrentUserName.</p>
+        <b>Available users:</b>
+        <ul style="list-style-type: none">
+            <li>Rasmus Føgh</li>
+            <li>Morten Hansen</li>
+            <li>Viktor Lundsgaard</li>
+        </ul>
+
         <form  method="post" asp-controller="Home" asp-action="Index">
             <input type="text" name="user" />
             <input type="submit" value="Submit" />

@@ -7,7 +7,6 @@ namespace NosediveNetwork.Models
 {
     public static class CurrentUser
     {
-        public static string CurrentUserName { get; set; }
-        public static void setUser(string Name) => CurrentUserName = Name;
+        public static string CurrentUserName { get; set; } = "Morten Hansen";
     }
 }

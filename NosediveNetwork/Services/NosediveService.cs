@@ -127,11 +127,11 @@ namespace NosediveNetwork.Services
             // Creating users
             CreateUser(new Models.User() { Name = "Morten Hansen", Age = 22, Gender = "Male" });
             CreateUser(new Models.User() { Name = "Rasmus Føgh", Age = 12, Gender = "Unidentifiable" });
-            CreateUser(new Models.User() { Name = "Viktor Lundsgaard", Age = 23, Gender = "Male" });
-
+            CreateUser(new Models.User() { Name = "Viktor Lundsgaard", Age = 24, Gender = "Male" });
+   
             // Creating circles
             CreateCircle(GetUser("Morten Hansen"), "Area 51 conspiracy group");
-            CreateCircle(GetUser("Viktor Lundsgaard"), "Hot girls group");
+
             UserAddCircle(GetCircle("Area 51 conspiracy group"), GetUser("Rasmus Føgh"));
 
             // Creating posts

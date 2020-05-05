@@ -14,7 +14,7 @@ namespace NosediveNetwork.Models
         public WallViewModel(NosediveService nosediveService)
         {
             NosediveService = nosediveService;
-            WallList = NosediveService.Wall(NosediveService.GetUser("Morten Hansen"));
+            WallList = NosediveService.Wall(NosediveService.GetUser(CurrentUser.CurrentUserName));
         }
     }
 }
