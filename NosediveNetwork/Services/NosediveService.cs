@@ -24,6 +24,7 @@ namespace NosediveNetwork.Services
             GetCollections(settings, database);         
         }
 
+        public List<User> GetAllUsers() => _Users.Find(_ => true).ToList();
         public User GetUser(string name) => _Users.Find(user => user.Name == name).FirstOrDefault();
         public User GetUserFromId(string id) => _Users.Find(user => user.Id == id).FirstOrDefault();
         public Circle GetCircle(string name) => _Circles.Find(circle => circle.Name == name).FirstOrDefault();
