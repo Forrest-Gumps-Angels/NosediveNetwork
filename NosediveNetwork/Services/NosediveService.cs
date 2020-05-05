@@ -20,7 +20,7 @@ namespace NosediveNetwork.Services
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName); //"NosediveDb"
 
-            DropDatabase(settings, database);
+            //DropDatabase(settings, database);
             GetCollections(settings, database);         
         }
 
@@ -160,6 +160,8 @@ namespace NosediveNetwork.Services
             _Users = database.GetCollection<User>(settings.UserCollectionName); //"Users"
             _Posts = database.GetCollection<Post>(settings.PostCollectionName); //"Posts"
             _Circles = database.GetCollection<Circle>(settings.CircleCollectionName); //"Circles"
+
+            if (_Users.Find(_ => true).ToList().Count() <= 0) Seed();
         }
     }
 }
