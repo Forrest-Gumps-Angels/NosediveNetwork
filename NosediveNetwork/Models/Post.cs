@@ -13,12 +13,14 @@ namespace NosediveNetwork.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string PostId { get; set; }
-        public string UserId { get; set; }
-        public string CircleId { get; set; }
-        public int Timestamp { get; set; }
+        
+        public DateTime Timestamp { get; set; }
 
         public string TextContent { get; set; }
         public Picture PictureContent { get; set; }
+
+        public string UserId { get; set; }
+        public string CircleId { get; set; }
 
         public override string ToString()
         {

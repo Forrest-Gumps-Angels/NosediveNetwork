@@ -12,12 +12,12 @@ namespace NosediveNetwork.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string CircleId { get; set;  }
-        public string UserId { get; set; }
-        public string PostId { get; set; }
+        public string Name { get; set; }
+        //public List<string> UsersId { get; set; }
 
         public override string ToString()
         {
-            return string.Format($"Circle ID {CircleId}, UserId {UserId}, PostId {PostId}");
+            return string.Format($"Circle ID {CircleId}, Name {Name}");
         }
     }
 }
