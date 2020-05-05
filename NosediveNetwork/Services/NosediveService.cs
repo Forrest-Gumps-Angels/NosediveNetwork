@@ -10,24 +10,18 @@ namespace NosediveNetwork.Services
 {
     public class NosediveService
     {
-        private readonly IMongoCollection<User> _Users;
-        private readonly IMongoCollection<Post> _Posts;
-        private readonly IMongoCollection<Circle> _Circles;
+        private IMongoCollection<User> _Users;
+        private IMongoCollection<Post> _Posts;
+        private IMongoCollection<Circle> _Circles;
+        
 
         public NosediveService(INosediveNetworkDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName); //"NosediveDb"
 
-            database.DropCollection(settings.CircleCollectionName);
-            database.DropCollection(settings.PostCollectionName);
-            database.DropCollection(settings.UserCollectionName);
-
-            _Users = database.GetCollection<User>(settings.UserCollectionName); //"Users"
-            _Posts = database.GetCollection<Post>(settings.PostCollectionName); //"Posts"
-            _Circles = database.GetCollection<Circle>(settings.CircleCollectionName); //"Circles"
-
-            Seed();
+            DropDatabase(settings, database);
+            GetCollections(settings, database);         
         }
 
         public User GetUser(string name) => _Users.Find(user => user.Name == name).FirstOrDefault();
@@ -149,6 +143,20 @@ namespace NosediveNetwork.Services
 
             // Adding friends
             UserAddFriend(GetUser("Morten Hansen"), GetUser("Viktor Lundsgaard"));
+        }
+
+        public void DropDatabase(INosediveNetworkDatabaseSettings settings, IMongoDatabase database)
+        {
+            database.DropCollection(settings.CircleCollectionName);
+            database.DropCollection(settings.PostCollectionName);
+            database.DropCollection(settings.UserCollectionName);
+        }
+
+        public void GetCollections(INosediveNetworkDatabaseSettings settings, IMongoDatabase database)
+        {
+            _Users = database.GetCollection<User>(settings.UserCollectionName); //"Users"
+            _Posts = database.GetCollection<Post>(settings.PostCollectionName); //"Posts"
+            _Circles = database.GetCollection<Circle>(settings.CircleCollectionName); //"Circles"
         }
     }
 }
