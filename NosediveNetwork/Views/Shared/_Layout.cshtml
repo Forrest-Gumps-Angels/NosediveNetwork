@@ -25,7 +25,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Feed" asp-action="Index">Feed</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Wall" asp-action="Index">Wall</a> 
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Wall" asp-action="Index">Wall</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" >@CurrentUser.CurrentUserName</a>
                         </li>
                     </ul>
                 </div>
