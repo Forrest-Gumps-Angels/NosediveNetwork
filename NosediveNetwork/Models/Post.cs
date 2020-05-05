@@ -22,6 +22,10 @@ namespace NosediveNetwork.Models
         public string UserId { get; set; }
         public string CircleId { get; set; }
 
+        public List<Comment> Comments { get; set; } = new List<Comment>();
+
+
+
         public override string ToString()
         {
             return string.Format($"PostId {PostId}, Circle ID {CircleId}, UserId {UserId}, Timestamp {Timestamp}");

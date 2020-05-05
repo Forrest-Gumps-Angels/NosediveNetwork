@@ -26,9 +26,12 @@ namespace NosediveNetwork.Services
             _Users = database.GetCollection<User>(settings.UserCollectionName); //"Users"
             _Posts = database.GetCollection<Post>(settings.PostCollectionName); //"Posts"
             _Circles = database.GetCollection<Circle>(settings.CircleCollectionName); //"Circles"
+
+            Seed();
         }
 
         public User GetUser(string name) => _Users.Find(user => user.Name == name).FirstOrDefault();
+        public User GetUserFromId(string id) => _Users.Find(user => user.Id == id).FirstOrDefault();
         public Circle GetCircle(string name) => _Circles.Find(circle => circle.Name == name).FirstOrDefault();
 
 
@@ -43,7 +46,9 @@ namespace NosediveNetwork.Services
 
             //return _Posts.Find(Builders<Post>.Filter.ElemMatch(post => post.ci)).ToList();
 
-            return _Posts.Find(Builders<Post>.Filter.eq(x => user.CircleId.Any(x.CircleId))).ToList();
+            return _Posts.Find(Builders<Post>.Filter
+                .Where(x => user.CircleId.Contains(x.CircleId) || user.Friends.Contains(x.UserId))).ToList();
+            // user.
             //return _Posts.Find(new BsonDocument("UserId", user_id)).ToList();
         }
 
@@ -58,7 +63,7 @@ namespace NosediveNetwork.Services
             return user;
         }
 
-        public void CreateTextPost(User user, string content, Circle circle)
+        public Post CreateTextPost(User user, string content, Circle circle)
         {
             var post = new Post()
             {
@@ -68,9 +73,10 @@ namespace NosediveNetwork.Services
                 CircleId = circle.CircleId
             };
             _Posts.InsertOne(post);
+            return post;
         }
 
-        public void CreatePicturePost(User user, Picture content, Circle circle = null)
+        public Post CreatePicturePost(User user, Picture content, Circle circle = null)
         {
             var post = new Post()
             {
@@ -80,6 +86,7 @@ namespace NosediveNetwork.Services
                 CircleId = circle.CircleId
             };
             _Posts.InsertOne(post);
+            return post;
         }
 
         public void CreateCircle(User user, string name)
@@ -89,7 +96,8 @@ namespace NosediveNetwork.Services
                 Name = name
             };
             _Circles.InsertOne(circle);
-            CircleAddUser(circle, user);
+            
+            UserAddCircle(circle, user);
         }
 
         public void CreateComment(Post post, User user, string content)
@@ -100,18 +108,45 @@ namespace NosediveNetwork.Services
                 Timestamp = DateTime.Now,
                 UserId = user.Id
             };
-            _Posts.UpdateOne(new BsonDocument("Post", post.PostId),
+            _Posts.UpdateOne(Builders<Post>.Filter.Eq("PostId", post.PostId),
                 Builders<Post>.Update.Push("Comments", comment));
         }
 
-        public void CircleAddUser(Circle circle, User user)
+        public void UserAddCircle(Circle circle, User user)
         {
-            _Circles.UpdateOne(new BsonDocument("CircleId", circle.CircleId), Builders<Circle>.Update.Push("UsersId", user.Id));
+            _Users.UpdateOne(Builders<User>.Filter.Eq("Id", user.Id), Builders<User>.Update.Push("CircleId", circle.CircleId));
         }
 
         public void UserAddFriend(User user, User friend)
         {
-            _Users.UpdateOne(new BsonDocument("Id", user.Id), Builders<User>.Update.Push("Friends", friend.Id));
+            _Users.UpdateOne(Builders<User>.Filter.Eq("Id", user.Id), Builders<User>.Update.Push("Friends", friend.Id));
+        }
+
+        public void Seed()
+        {
+            ///////// Creating dummy data ////////////
+
+
+            // Creating users
+            CreateUser(new Models.User() { Name = "Morten Hansen", Age = 22, Gender = "Male" });
+            CreateUser(new Models.User() { Name = "Rasmus Føgh", Age = 12, Gender = "Unidentifiable" });
+            CreateUser(new Models.User() { Name = "Viktor Lundsgaard", Age = 23, Gender = "Male" });
+
+            // Creating circles
+            CreateCircle(GetUser("Morten Hansen"), "Area 51 conspiracy group");
+            CreateCircle(GetUser("Viktor Lundsgaard"), "Hot girls group");
+            UserAddCircle(GetCircle("Area 51 conspiracy group"), GetUser("Rasmus Føgh"));
+
+            // Creating posts
+            var post1 = CreateTextPost(GetUser("Morten Hansen"), "Hej jeg er Morten!", GetCircle("Area 51 conspiracy group"));
+            var post2 = CreateTextPost(GetUser("Rasmus Føgh"), "Hej jeg er i tvivl om mit køn!", GetCircle("Area 51 conspiracy group"));
+            var post3 = CreateTextPost(GetUser("Viktor Lundsgaard"), "Hej jeg laver mange damer!", GetCircle("Hot girls group"));
+
+            CreateComment(post1, GetUser("Viktor Lundsgaard"), "Super fedt Morten, jeg hedder Viktor!");
+
+
+            // Adding friends
+            UserAddFriend(GetUser("Morten Hansen"), GetUser("Viktor Lundsgaard"));
         }
     }
 }

@@ -1,0 +1,35 @@
+﻿@model WallViewModel
+@{
+    ViewData["Title"] = "Wall";
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="@Url.Content("~/css/nosedive.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <h1>Wall</h1>
+
+    <form method="get" asp-controller="Wall" asp-action="Index">
+        
+        <div class="output">
+            @foreach (var Post in Model.WallList)
+            {
+
+            }
+
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+
+
+

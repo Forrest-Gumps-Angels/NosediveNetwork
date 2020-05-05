@@ -1,0 +1,52 @@
+﻿@model FeedViewModel
+@{
+    ViewData["Title"] = "Feed";
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="@Url.Content("~/css/reception.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <h1>Reception Get Page</h1>
+
+    <form method="get" asp-controller="Feed" asp-action="Index">
+        <input type="submit" value="Refresh" />
+        <div class="output">
+            @foreach (var Post in Model.FeedList)
+            {
+
+                <div class="single_post" style="border: 5px solid #1C6EA4; margin-bottom:20px">
+                    <ul style="list-style-type: none">
+                        <h3 >@Model.NosediveService.GetUserFromId(Post.UserId).Name</h3>
+                        <li style="margin-bottom:20px">@Post.TextContent</li>
+                        <div class="comments">
+                            <ul style="list-style-type: none">
+                                @if (Post.Comments != null)
+                                {
+                                    @foreach (var comment in Post.Comments)
+                                    {
+                                        <h4 style="color:dimgrey">@Model.NosediveService.GetUserFromId(comment.UserId).Name</h4>
+                                        <li style="color:dimgrey">@comment.Content</li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
+
+                
+
+
+            }
+
+        </div>
+    </form>
+</body>
+</html>

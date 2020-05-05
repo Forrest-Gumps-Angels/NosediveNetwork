@@ -19,10 +19,10 @@ namespace NosediveNetwork.Models
 
         public int Age { get; set; }
 
-        public List<string> BlockedUsers { get; set; }
+        public List<string> BlockedUsers { get; set; } = new List<string>();
 
-        public List<string> Friends { get; set; }
-        public List<string> CircleId { get; set; }
+        public List<string> Friends { get; set; } = new List<string>();
+        public List<string> CircleId { get; set; } = new List<string>();
 
         public override string ToString()
         {
