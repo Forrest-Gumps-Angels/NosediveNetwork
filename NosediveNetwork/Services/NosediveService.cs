@@ -143,12 +143,14 @@ namespace NosediveNetwork.Services
             var post1 = CreateTextPost(GetUser("Morten Hansen"), "Hej jeg er Morten!", GetCircle("Area 51 conspiracy group"));
             var post2 = CreateTextPost(GetUser("Rasmus Føgh"), "Hej jeg er i tvivl om mit køn!", GetCircle("Area 51 conspiracy group"));
             var post3 = CreateTextPost(GetUser("Viktor Lundsgaard"), "Hej jeg laver mange damer!", GetCircle("Hot girls group"));
+            var post4 = CreateTextPost(GetUser("Morten Hansen"), "Jeg kan godt lide kylling!", GetCircle("Area 51 conspiracy group"));
 
             CreateComment(post1, GetUser("Viktor Lundsgaard"), "Super fedt Morten, jeg hedder Viktor!");
-
+            CreateComment(post4, GetUser("Viktor Lundsgaard"), "Super fedt Morten, det kan jeg også!");
 
             // Adding friends
             UserAddFriend(GetUser("Morten Hansen"), GetUser("Viktor Lundsgaard"));
+            UserAddFriend(GetUser("Viktor Lundsgaard"), GetUser("Morten Hansen"));
         }
     }
 }
