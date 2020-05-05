@@ -14,7 +14,7 @@ namespace NosediveNetwork.Models
         public FeedViewModel(NosediveService nosediveService)
         {
             NosediveService = nosediveService;
-            FeedList = NosediveService.Feed(NosediveService.GetUser("Morten Hansen"));
+            FeedList = NosediveService.Feed(NosediveService.GetUser(CurrentUser.CurrentUserName));
         }
     }
 }

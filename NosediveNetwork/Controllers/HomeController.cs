@@ -6,20 +6,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NosediveNetwork.Models;
+using NosediveNetwork.Services;
 
 namespace NosediveNetwork.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly NosediveService _nosediveService;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(NosediveService nosediveService, ILogger<HomeController> logger)
         {
+            _nosediveService = nosediveService;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string user)
         {
+            if (_nosediveService.GetAllUsers().FirstOrDefault(x => x.Name == user) != null) CurrentUser.CurrentUserName = user;
             return View();
         }
 
